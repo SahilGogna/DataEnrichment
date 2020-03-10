@@ -5,6 +5,7 @@ import com.mcit.scala.Mapping.{CalendarLookup, RouteLookup}
 
 /**
  * @author sahilgogna on 2020-02-08
+ * This class is the entry point of the application
  */
 object EntryPoint extends App {
 
@@ -12,19 +13,18 @@ object EntryPoint extends App {
 
   val tripList: List[Trips] = readData.getTripList
   val routeList: List[Routes] = readData.getRouteList
-  val calanderList: List[Calender] = readData.getCalenderList
+  val calendarList: List[Calender] = readData.getCalenderList
 
   val routeLookup = new RouteLookup(routeList)
-  val calenderLookUp = new CalendarLookup(calanderList)
+  val calenderLookUp = new CalendarLookup(calendarList)
 
   val enrichedTripRoute: List[TripRoute] = tripList.map(trip => TripRoute(trip,
-                                                    routeLookup.lookup(trip.route_id))).toList
+                                                    routeLookup.lookup(trip.route_id)))
 
   val enrichedTrip: List[EnrichedTrip] = enrichedTripRoute.map(tripRoute => EnrichedTrip(tripRoute,
-                                                    calenderLookUp.lookup(tripRoute.trips.service_id))).toList
+                                                    calenderLookUp.lookup(tripRoute.trips.service_id)))
 
-//  enrichedTrip.foreach( element => println(s" TripId: ${element.tripRoute.trips.trip_id} RouteId: ${element.tripRoute.routes.route_id} ServiceId: ${element.calender.service_id}"))
-
-  val writer = new DataWriter(enrichedTrip)
-  writer.writeData
+  val finalListOfTrips: List[EnrichedTrip] = enrichedTrip.filter(a => a.calender.monday.equals("1"))
+  val writer = new DataWriter(finalListOfTrips)
+  writer.writeData()
 }

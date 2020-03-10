@@ -1,14 +1,12 @@
 package com.mcit.scala.ReadWriteServices
 
-import java.io.{BufferedWriter, File, FileWriter}
-
+import java.io.{File, FileWriter}
 import com.mcit.scala.Entities.EnrichedTrip
-
-import scala.collection.mutable.ListBuffer
 import com.opencsv._
 
 /**
  * @author sahilgogna on 2020-02-08
+ * This class writes the data in form of csv file
  */
 class DataWriter(enrichedList: List[EnrichedTrip]) {
 
@@ -16,15 +14,15 @@ class DataWriter(enrichedList: List[EnrichedTrip]) {
   val outputPath = "/Users/sahilgogna/Documents/Big Data College/Course 2/Assignments/Scala Project/enrichedOutput.csv"
   var file: File = new File(outputPath)
   val output: FileWriter = new FileWriter(file)
-  val writer: CSVWriter = new CSVWriter(output);
-  val csvSchema = Array("Route Id", "Service Id", "Trip Id", "Trip Head Sign", "Direction Id",
+  val writer: CSVWriter = new CSVWriter(output)
+  val csvSchema: Array[String] = Array("Route Id", "Service Id", "Trip Id", "Trip Head Sign", "Direction Id",
     "Shape Id", "Wheelchair accessible", "Note_FR", "Note En", "Agency Id",
     "Route Short Name", "Route Long Name", "Route Type", "Route Url", "Route Colour",
-    "Monday", "Tuesday", "Wednesday", "Thrusday", "Friday", "Saturday", "Sunday",
+    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
     "Start Date", "End Date")
 
 
-  def writeData: Unit = {
+  def writeData(): Unit = {
     writer.writeNext(csvSchema)
     enrichedList.foreach(element => {
       val data = Array(element.tripRoute.routes.route_id.toString, element.calender.service_id.toString,
@@ -43,7 +41,7 @@ class DataWriter(enrichedList: List[EnrichedTrip]) {
       writer.writeNext(data)
     })
     // closing writer connection
-    writer.close();
+    writer.close()
 
   }
 
