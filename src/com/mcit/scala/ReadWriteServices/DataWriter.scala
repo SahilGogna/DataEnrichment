@@ -15,12 +15,11 @@ class DataWriter(enrichedList: List[EnrichedTrip]) {
   var file: File = new File(outputPath)
   val output: FileWriter = new FileWriter(file)
   val writer: CSVWriter = new CSVWriter(output)
+
   val csvSchema: Array[String] = Array("Route Id", "Service Id", "Trip Id", "Trip Head Sign", "Direction Id",
     "Shape Id", "Wheelchair accessible", "Note_FR", "Note En", "Agency Id",
     "Route Short Name", "Route Long Name", "Route Type", "Route Url", "Route Colour",
-    "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday",
-    "Start Date", "End Date")
-
+    "Monday")
 
   def writeData(): Unit = {
     writer.writeNext(csvSchema)
@@ -33,10 +32,6 @@ class DataWriter(enrichedList: List[EnrichedTrip]) {
         element.tripRoute.routes.route_short_name.toString, element.tripRoute.routes.route_long_name.toString,
         element.tripRoute.routes.route_type.toString, element.tripRoute.routes.route_url.toString,
         element.tripRoute.routes.route_color.toString, element.calender.monday.toString,
-        element.calender.tuesday.toString, element.calender.wednesday.toString,
-        element.calender.thursday.toString, element.calender.friday.toString,
-        element.calender.saturday.toString, element.calender.sunday.toString,
-        element.calender.start_date.toString, element.calender.end_date.toString
       )
       writer.writeNext(data)
     })
